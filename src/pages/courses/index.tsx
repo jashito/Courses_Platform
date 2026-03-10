@@ -1,8 +1,10 @@
+import type { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import CourseCard from "@/components/CourseCard";
 import { EmptyState, ErrorState, LoadingState } from "@/components/States";
 import { fetchJSON } from "@/lib/api";
+import { requireRole } from "@/lib/requireRole";
 
 interface Course {
   id: string;
@@ -10,6 +12,9 @@ interface Course {
   description?: string | null;
   is_published: boolean;
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) =>
+  requireRole(ctx, ["admin", "student"]);
 
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
