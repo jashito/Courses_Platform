@@ -35,13 +35,14 @@ export default function CoursesPage() {
 
   return (
     <Layout>
-      <section className="section">
-        <h1 className="page-title">Cursos disponibles</h1>
+      <section className="surface page-hero">
+        <h1 className="page-title">Catálogo ejecutivo</h1>
+        <p className="meta">Programas premium listos para impulsar el desempeño.</p>
         <input
+          className="input"
           placeholder="Buscar curso por nombre"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          style={{ padding: 10, width: "100%", borderRadius: 8, border: "1px solid #e5e7eb" }}
         />
       </section>
 
