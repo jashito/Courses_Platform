@@ -1,9 +1,14 @@
+import type { GetServerSideProps } from "next";
 import Layout from "@/components/Layout";
+import { requireRole } from "@/lib/requireRole";
 
 const courses = [
   { id: "1", title: "Introducción a OKRs", status: "Publicado" },
   { id: "2", title: "Liderazgo estratégico", status: "Borrador" }
 ];
+
+export const getServerSideProps: GetServerSideProps = async (ctx) =>
+  requireRole(ctx, ["admin"]);
 
 export default function AdminPage() {
   return (
