@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+
 :root {
   color-scheme: light;
   --bg: #0b4f4e;
@@ -38,7 +40,7 @@
 
 body {
   margin: 0;
-  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family: "Open Sans", "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   background: radial-gradient(circle at top, rgba(43, 179, 154, 0.24), transparent 48%), var(--bg);
   color: var(--text);
 }
@@ -209,6 +211,32 @@ a {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+.theme-toggle {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(7, 36, 35, 0.35);
+  cursor: pointer;
+  padding: 0;
+}
+
+.theme-toggle span {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  transition: transform 0.2s ease;
+}
+
+[data-theme="dark"] .theme-toggle span {
+  transform: translateX(24px);
 }
 
 .footer {
