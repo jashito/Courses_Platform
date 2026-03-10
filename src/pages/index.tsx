@@ -13,7 +13,7 @@ export default function HomePage() {
           <Link className="button" href="/courses">
             Ver cursos
           </Link>
-          <Link className="button secondary" href="/courses">
+          <Link className="button secondary" href="/login">
             Iniciar sesión
           </Link>
         </div>
