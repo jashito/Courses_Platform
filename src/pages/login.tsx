@@ -3,9 +3,6 @@ import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
-const videoUrl =
-  "https://daxgprrxtmufcexrosmt.supabase.co/storage/v1/object/public/resources/6913005_Motion_Graphics_Motion_Graphic_3840x2160.mp4";
-
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
