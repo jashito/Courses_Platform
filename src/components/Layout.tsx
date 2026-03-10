@@ -91,7 +91,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </nav>
         <div className="nav-actions">
           <button className="theme-toggle" onClick={toggleTheme} type="button" aria-label="Cambiar tema">
-            {theme === "light" ? "🌙" : "☀️"}
+            <span aria-hidden="true" />
           </button>
           {isLoggedIn ? (
             <button className="button secondary" onClick={handleLogout} type="button">
