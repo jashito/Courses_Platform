@@ -130,57 +130,94 @@ alter table public.quiz_answers enable row level security;
 alter table public.quiz_attempts enable row level security;
 alter table public.progress enable row level security;
 
+-- Drop existing policies (safe for reruns)
+drop policy if exists profiles_select_own on public.profiles;
+drop policy if exists profiles_update_own on public.profiles;
+drop policy if exists courses_select_published on public.courses;
+drop policy if exists courses_admin_write on public.courses;
+drop policy if exists courses_admin_update on public.courses;
+drop policy if exists courses_admin_delete on public.courses;
+drop policy if exists modules_select_published on public.modules;
+drop policy if exists modules_admin_write on public.modules;
+drop policy if exists modules_admin_update on public.modules;
+drop policy if exists modules_admin_delete on public.modules;
+drop policy if exists lessons_select_published on public.lessons;
+drop policy if exists lessons_admin_write on public.lessons;
+drop policy if exists lessons_admin_update on public.lessons;
+drop policy if exists lessons_admin_delete on public.lessons;
+drop policy if exists resources_select_published on public.resources;
+drop policy if exists resources_admin_write on public.resources;
+drop policy if exists resources_admin_update on public.resources;
+drop policy if exists resources_admin_delete on public.resources;
+drop policy if exists quizzes_select_published on public.quizzes;
+drop policy if exists quizzes_admin_write on public.quizzes;
+drop policy if exists quizzes_admin_update on public.quizzes;
+drop policy if exists quizzes_admin_delete on public.quizzes;
+drop policy if exists quiz_questions_select_published on public.quiz_questions;
+drop policy if exists quiz_questions_admin_write on public.quiz_questions;
+drop policy if exists quiz_questions_admin_update on public.quiz_questions;
+drop policy if exists quiz_questions_admin_delete on public.quiz_questions;
+drop policy if exists quiz_answers_select_published on public.quiz_answers;
+drop policy if exists quiz_answers_admin_write on public.quiz_answers;
+drop policy if exists quiz_answers_admin_update on public.quiz_answers;
+drop policy if exists quiz_answers_admin_delete on public.quiz_answers;
+drop policy if exists progress_select_own on public.progress;
+drop policy if exists progress_insert_own on public.progress;
+drop policy if exists progress_update_own on public.progress;
+drop policy if exists quiz_attempts_select_own on public.quiz_attempts;
+drop policy if exists quiz_attempts_insert_own on public.quiz_attempts;
+
 -- Profiles policies
-create policy if not exists profiles_select_own
+create policy profiles_select_own
 on public.profiles for select
 using (user_id = auth.uid() or public.is_admin(auth.uid()));
 
-create policy if not exists profiles_update_own
+create policy profiles_update_own
 on public.profiles for update
 using (user_id = auth.uid())
 with check (user_id = auth.uid());
 
 -- Courses policies
-create policy if not exists courses_select_published
+create policy courses_select_published
 on public.courses for select
 using (is_published = true or public.is_admin(auth.uid()));
 
-create policy if not exists courses_admin_write
+create policy courses_admin_write
 on public.courses for insert
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists courses_admin_update
+create policy courses_admin_update
 on public.courses for update
 using (public.is_admin(auth.uid()))
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists courses_admin_delete
+create policy courses_admin_delete
 on public.courses for delete
 using (public.is_admin(auth.uid()));
 
 -- Modules policies (visible if parent course published)
-create policy if not exists modules_select_published
+create policy modules_select_published
 on public.modules for select
 using (
   public.is_admin(auth.uid()) or
   exists (select 1 from public.courses c where c.id = course_id and c.is_published = true)
 );
 
-create policy if not exists modules_admin_write
+create policy modules_admin_write
 on public.modules for insert
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists modules_admin_update
+create policy modules_admin_update
 on public.modules for update
 using (public.is_admin(auth.uid()))
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists modules_admin_delete
+create policy modules_admin_delete
 on public.modules for delete
 using (public.is_admin(auth.uid()));
 
 -- Lessons policies (visible if parent course published)
-create policy if not exists lessons_select_published
+create policy lessons_select_published
 on public.lessons for select
 using (
   public.is_admin(auth.uid()) or
@@ -191,21 +228,21 @@ using (
   )
 );
 
-create policy if not exists lessons_admin_write
+create policy lessons_admin_write
 on public.lessons for insert
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists lessons_admin_update
+create policy lessons_admin_update
 on public.lessons for update
 using (public.is_admin(auth.uid()))
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists lessons_admin_delete
+create policy lessons_admin_delete
 on public.lessons for delete
 using (public.is_admin(auth.uid()));
 
 -- Resources policies (visible if parent course published)
-create policy if not exists resources_select_published
+create policy resources_select_published
 on public.resources for select
 using (
   public.is_admin(auth.uid()) or
@@ -217,21 +254,21 @@ using (
   )
 );
 
-create policy if not exists resources_admin_write
+create policy resources_admin_write
 on public.resources for insert
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists resources_admin_update
+create policy resources_admin_update
 on public.resources for update
 using (public.is_admin(auth.uid()))
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists resources_admin_delete
+create policy resources_admin_delete
 on public.resources for delete
 using (public.is_admin(auth.uid()));
 
 -- Quizzes policies (visible if parent course published)
-create policy if not exists quizzes_select_published
+create policy quizzes_select_published
 on public.quizzes for select
 using (
   public.is_admin(auth.uid()) or
@@ -243,21 +280,21 @@ using (
   )
 );
 
-create policy if not exists quizzes_admin_write
+create policy quizzes_admin_write
 on public.quizzes for insert
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists quizzes_admin_update
+create policy quizzes_admin_update
 on public.quizzes for update
 using (public.is_admin(auth.uid()))
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists quizzes_admin_delete
+create policy quizzes_admin_delete
 on public.quizzes for delete
 using (public.is_admin(auth.uid()));
 
 -- Quiz questions policies
-create policy if not exists quiz_questions_select_published
+create policy quiz_questions_select_published
 on public.quiz_questions for select
 using (
   public.is_admin(auth.uid()) or
@@ -270,21 +307,21 @@ using (
   )
 );
 
-create policy if not exists quiz_questions_admin_write
+create policy quiz_questions_admin_write
 on public.quiz_questions for insert
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists quiz_questions_admin_update
+create policy quiz_questions_admin_update
 on public.quiz_questions for update
 using (public.is_admin(auth.uid()))
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists quiz_questions_admin_delete
+create policy quiz_questions_admin_delete
 on public.quiz_questions for delete
 using (public.is_admin(auth.uid()));
 
 -- Quiz answers policies
-create policy if not exists quiz_answers_select_published
+create policy quiz_answers_select_published
 on public.quiz_answers for select
 using (
   public.is_admin(auth.uid()) or
@@ -298,38 +335,38 @@ using (
   )
 );
 
-create policy if not exists quiz_answers_admin_write
+create policy quiz_answers_admin_write
 on public.quiz_answers for insert
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists quiz_answers_admin_update
+create policy quiz_answers_admin_update
 on public.quiz_answers for update
 using (public.is_admin(auth.uid()))
 with check (public.is_admin(auth.uid()));
 
-create policy if not exists quiz_answers_admin_delete
+create policy quiz_answers_admin_delete
 on public.quiz_answers for delete
 using (public.is_admin(auth.uid()));
 
 -- Progress policies
-create policy if not exists progress_select_own
+create policy progress_select_own
 on public.progress for select
 using (user_id = auth.uid() or public.is_admin(auth.uid()));
 
-create policy if not exists progress_insert_own
+create policy progress_insert_own
 on public.progress for insert
 with check (user_id = auth.uid());
 
-create policy if not exists progress_update_own
+create policy progress_update_own
 on public.progress for update
 using (user_id = auth.uid())
 with check (user_id = auth.uid());
 
 -- Quiz attempts policies
-create policy if not exists quiz_attempts_select_own
+create policy quiz_attempts_select_own
 on public.quiz_attempts for select
 using (user_id = auth.uid() or public.is_admin(auth.uid()));
 
-create policy if not exists quiz_attempts_insert_own
+create policy quiz_attempts_insert_own
 on public.quiz_attempts for insert
 with check (user_id = auth.uid());
