@@ -63,6 +63,7 @@ export default function LoginPage() {
 
   return (
     <Layout>
+<<<<<<< HEAD
       <section className="login-hero">
         <video className="login-video" autoPlay muted loop playsInline preload="metadata">
           <source src={videoUrl} type="video/mp4" />
@@ -95,6 +96,20 @@ export default function LoginPage() {
             {error && <p className="meta" style={{ marginTop: 12, color: "#dc2626" }}>{error}</p>}
           </div>
         </div>
+=======
+      <section className="section">
+        <h1 className="page-title">Inicia sesión</h1>
+        <p className="meta">Accede con tu cuenta de Google para continuar.</p>
+
+        <div style={{ marginTop: 20 }}>
+          <button className="button" onClick={handleGoogleLogin} disabled={loading}>
+            Iniciar con Google
+          </button>
+        </div>
+
+        {loading && <p className="meta" style={{ marginTop: 12 }}>Comprobando sesión...</p>}
+        {error && <p className="meta" style={{ marginTop: 12, color: "#dc2626" }}>{error}</p>}
+>>>>>>> parent of 841d371 (Update login.tsx file with new content)
       </section>
     </Layout>
   );
