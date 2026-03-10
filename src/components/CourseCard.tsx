@@ -11,11 +11,14 @@ interface CourseCardProps {
 export default function CourseCard({ id, title, description, status, progress }: CourseCardProps) {
   return (
     <div className="card">
+      {status && <span className="badge">{status}</span>}
       <h3>{title}</h3>
       {description && <p className="meta">{description}</p>}
-      {status && <span className="badge">{status}</span>}
       {typeof progress === "number" && <p className="meta">Progreso: {progress}%</p>}
-      <Link className="button link" href={`/courses/${id}`}>Ver curso</Link>
+      <div className="nav-actions">
+        <Link className="button link" href={`/courses/${id}`}>\n          Ver programa
+        </Link>
+      </div>
     </div>
   );
 }
