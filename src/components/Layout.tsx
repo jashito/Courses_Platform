@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
+type UserRole = "admin" | "student" | null;
+
 export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState<UserRole>(null);
 
   useEffect(() => {
     let active = true;
@@ -14,7 +17,23 @@ export default function Layout({ children }: { children: ReactNode }) {
     const checkUser = async () => {
       const { data: authData } = await supabaseBrowser.auth.getUser();
       if (!active) return;
-      setIsLoggedIn(!!authData.user);
+
+      if (!authData.user) {
+        setIsLoggedIn(false);
+        setRole(null);
+        return;
+      }
+
+      setIsLoggedIn(true);
+
+      const { data: profile } = await supabaseBrowser
+        .from("profiles")
+        .select("role")
+        .eq("user_id", authData.user.id)
+        .single();
+
+      if (!active) return;
+      setRole((profile?.role ?? "student") as UserRole);
     };
 
     checkUser();
@@ -42,8 +61,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
         <nav className="nav-links">
           <Link href="/">Home</Link>
-          <Link href="/courses">Cursos</Link>
-          <Link href="/admin">Admin</Link>
+          {isLoggedIn && <Link href="/courses">Cursos</Link>}
+          {role === "admin" && <Link href="/admin">Admin</Link>}
           {isLoggedIn && (
             <button className="button secondary" onClick={handleLogout} type="button">
               Cerrar sesión
