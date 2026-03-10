@@ -11,12 +11,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let query = supabase
       .from("courses")
       .select("*, modules(*, lessons(*))")
-      .eq("id", id)
-      .single();
+      .eq("id", id);
 
     if (role !== "admin") query = query.eq("is_published", true);
 
-    const { data, error } = await query;
+    const { data, error } = await query.single();
     if (error) return res.status(404).json({ error: "Course not found" });
 
     return res.status(200).json(data);
