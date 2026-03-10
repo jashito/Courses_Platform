@@ -1,6 +1,6 @@
 export function LoadingState({ label = "Cargando..." }: { label?: string }) {
   return (
-    <div className="section">
+    <div className="surface">
       <p className="meta">{label}</p>
     </div>
   );
@@ -8,7 +8,7 @@ export function LoadingState({ label = "Cargando..." }: { label?: string }) {
 
 export function EmptyState({ title, description }: { title: string; description: string }) {
   return (
-    <div className="section">
+    <div className="surface">
       <h3>{title}</h3>
       <p className="meta">{description}</p>
     </div>
@@ -17,7 +17,7 @@ export function EmptyState({ title, description }: { title: string; description:
 
 export function ErrorState({ message }: { message: string }) {
   return (
-    <div className="section">
+    <div className="surface">
       <h3>Ups, hubo un problema</h3>
       <p className="meta">{message}</p>
     </div>
