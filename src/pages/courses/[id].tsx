@@ -1,9 +1,11 @@
+import type { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
 import { EmptyState, ErrorState, LoadingState } from "@/components/States";
 import { fetchJSON } from "@/lib/api";
 import Link from "next/link";
+import { requireRole } from "@/lib/requireRole";
 
 interface Lesson {
   id: string;
@@ -22,6 +24,9 @@ interface CourseDetail {
   description?: string | null;
   modules: Module[];
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) =>
+  requireRole(ctx, ["admin", "student"]);
 
 export default function CourseDetailPage() {
   const router = useRouter();
