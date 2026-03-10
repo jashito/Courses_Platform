@@ -3,6 +3,9 @@ import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
 import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
+const videoUrl =
+  "https://daxgprrxtmufcexrosmt.supabase.co/storage/v1/object/public/resources/6913005_Motion_Graphics_Motion_Graphic_3840x2160.mp4";
+
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -60,30 +63,37 @@ export default function LoginPage() {
 
   return (
     <Layout>
-      <section className="split">
-        <div className="surface">
-          <span className="pill">Acceso seguro</span>
-          <h1 className="page-title">Bienvenido a tu campus corporativo</h1>
-          <p className="meta">
-            Gestiona rutas de capacitación, módulos y evaluaciones con un diseño hecho para equipos ejecutivos.
-          </p>
-          <div className="list">
-            <div className="card soft">Acceso centralizado para líderes y estudiantes.</div>
-            <div className="card soft">Paneles inteligentes con métricas clave.</div>
-            <div className="card soft">Aprendizaje guiado con foco en resultados.</div>
-          </div>
-        </div>
+      <section className="login-hero">
+        <video className="login-video" autoPlay muted loop playsInline preload="metadata">
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+        <div className="login-overlay" />
 
-        <div className="login-card">
-          <h2 className="section-title">Inicia sesión</h2>
-          <p className="meta">Accede con tu cuenta de Google para continuar.</p>
-          <div style={{ marginTop: 20 }}>
-            <button className="button" onClick={handleGoogleLogin} disabled={loading}>
-              Iniciar con Google
-            </button>
+        <div className="split login-content">
+          <div className="surface">
+            <span className="pill">Acceso seguro</span>
+            <h1 className="page-title">Bienvenido a tu campus corporativo</h1>
+            <p className="meta">
+              Gestiona rutas de capacitación, módulos y evaluaciones con un diseño hecho para equipos ejecutivos.
+            </p>
+            <div className="list">
+              <div className="card soft">Acceso centralizado para líderes y estudiantes.</div>
+              <div className="card soft">Paneles inteligentes con métricas clave.</div>
+              <div className="card soft">Aprendizaje guiado con foco en resultados.</div>
+            </div>
           </div>
-          {loading && <p className="meta" style={{ marginTop: 12 }}>Comprobando sesión...</p>}
-          {error && <p className="meta" style={{ marginTop: 12, color: "#dc2626" }}>{error}</p>}
+
+          <div className="login-card">
+            <h2 className="section-title">Inicia sesión</h2>
+            <p className="meta">Accede con tu cuenta de Google para continuar.</p>
+            <div style={{ marginTop: 20 }}>
+              <button className="button" onClick={handleGoogleLogin} disabled={loading}>
+                Iniciar con Google
+              </button>
+            </div>
+            {loading && <p className="meta" style={{ marginTop: 12 }}>Comprobando sesión...</p>}
+            {error && <p className="meta" style={{ marginTop: 12, color: "#dc2626" }}>{error}</p>}
+          </div>
         </div>
       </section>
     </Layout>
