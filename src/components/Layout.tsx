@@ -7,7 +7,7 @@ import { supabaseBrowser } from "@/lib/supabaseBrowser";
 type UserRole = "admin" | "student" | null;
 type ThemeMode = "light" | "dark";
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NEXT_PUBLIC_IS_DEV === "true";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
