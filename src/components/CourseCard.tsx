@@ -10,7 +10,7 @@ interface CourseCardProps {
   imageUrl?: string;
 }
 
-const defaultImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect fill='%230b4f4e' width='400' height='200'/%3E%3Ctext fill='%23e2b23b' font-family='sans-serif' font-size='24' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECourse%3C/text%3E%3C/svg%3E";
+const defaultImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect fill='%231e293b' width='400' height='200'/%3E%3Crect fill='%23f59e0b' x='0' y='90' width='400' height='20'/%3E%3Ctext fill='%23f8fafc' font-family='sans-serif' font-size='24' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECourse%3C/text%3E%3C/svg%3E";
 
 export default function CourseCard({ id, title, description, status, progress, imageUrl }: CourseCardProps) {
   return (
