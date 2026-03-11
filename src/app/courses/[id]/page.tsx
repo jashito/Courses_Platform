@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { EmptyState, ErrorState, LoadingState } from "@/components/States";
+import { EmptyState, ErrorState } from "@/components/States";
+import { Skeleton } from "@/components/Skeleton";
 import { useFetch } from "@/lib/useFetch";
 import Link from "next/link";
 
@@ -23,6 +24,34 @@ interface CourseDetail {
   modules: Module[];
 }
 
+function CourseDetailSkeleton() {
+  return (
+    <>
+      <button className="button secondary" disabled>Volver a cursos</button>
+      <section className="surface page-hero">
+        <Skeleton height="24px" width="120px" />
+        <Skeleton height="42px" width="80%" style={{ marginTop: 12 }} />
+        <Skeleton height="20px" width="60%" style={{ marginTop: 8 }} />
+        <div className="nav-actions" style={{ marginTop: 16 }}>
+          <Skeleton height="44px" width="160px" />
+          <Skeleton height="44px" width="180px" />
+        </div>
+      </section>
+      <section className="split">
+        <div className="surface">
+          <Skeleton height="28px" width="200px" />
+          <Skeleton height="80px" width="100%" style={{ marginTop: 12 }} />
+          <Skeleton height="80px" width="100%" style={{ marginTop: 12 }} />
+        </div>
+        <aside className="surface">
+          <Skeleton height="28px" width="180px" />
+          <Skeleton height="20px" width="140px" style={{ marginTop: 8 }} />
+        </aside>
+      </section>
+    </>
+  );
+}
+
 export default function CourseDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const { data: course, isLoading, error } = useFetch<CourseDetail>(`/api/courses/${params.id}`);
@@ -33,7 +62,7 @@ export default function CourseDetailPage({ params }: { params: { id: string } })
         Volver a cursos
       </button>
 
-      {isLoading && <LoadingState label="Cargando curso..." />}
+      {isLoading && <CourseDetailSkeleton />}
       {error && <ErrorState message={error.message} />}
 
       {!isLoading && !error && !course && (
@@ -78,7 +107,7 @@ export default function CourseDetailPage({ params }: { params: { id: string } })
               <p className="meta">0% completado · 0/0 lecciones</p>
               <div className="list">
                 <div className="card soft">Siguiente lección en preparación.</div>
-                <div className="card soft">Material descargable próximamente.</div>
+                <div className="card soft">Material descargable próximos.</div>
               </div>
               <button className="button secondary" style={{ marginTop: 16 }}>
                 Ir a la siguiente lección

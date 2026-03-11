@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react";
 import CourseCard from "@/components/CourseCard";
-import { EmptyState, ErrorState, LoadingState } from "@/components/States";
+import { EmptyState, ErrorState } from "@/components/States";
+import { SkeletonList } from "@/components/Skeleton";
 import { useFetch } from "@/lib/useFetch";
 
 interface Course {
@@ -34,7 +35,7 @@ export default function CoursesPage() {
         onChange={(event) => setQuery(event.target.value)}
       />
 
-      {isLoading && <LoadingState label="Cargando cursos..." />}
+      {isLoading && <SkeletonList count={3} />}
       {error && <ErrorState message={error.message} />}
 
       {!isLoading && !error && filtered.length === 0 && (

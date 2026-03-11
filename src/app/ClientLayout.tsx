@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabaseBrowser";
+import { ToastProvider } from "@/components/Toast";
 
 type UserRole = "admin" | "instructor" | "student" | null;
 type ThemeMode = "light" | "dark";
@@ -81,37 +82,39 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   };
 
   return (
-    <div className="container">
-      {isDev && <div className="dev-banner">Modo desarrollo</div>}
-      <header className="nav">
-        <div className="brand">
-          <span className="brand-dot" />
-          <strong>Courses Platform</strong>
-        </div>
-        <nav className="nav-links">
-          <Link href="/">Inicio</Link>
-          {isLoggedIn && <Link href="/courses">Cursos</Link>}
-          {role === "admin" && <Link href="/admin">Admin</Link>}
-        </nav>
-        <div className="nav-actions">
-          <button className="theme-toggle" onClick={toggleTheme} type="button" aria-label="Cambiar tema">
-            <span aria-hidden="true" />
-          </button>
-          {isLoggedIn ? (
-            <button className="button secondary" onClick={handleLogout} type="button">
-              Cerrar sesión
+    <ToastProvider>
+      <div className="container">
+        {isDev && <div className="dev-banner">Modo desarrollo</div>}
+        <header className="nav">
+          <div className="brand">
+            <span className="brand-dot" />
+            <strong>Courses Platform</strong>
+          </div>
+          <nav className="nav-links">
+            <Link href="/">Inicio</Link>
+            {isLoggedIn && <Link href="/courses">Cursos</Link>}
+            {role === "admin" && <Link href="/admin">Admin</Link>}
+          </nav>
+          <div className="nav-actions">
+            <button className="theme-toggle" onClick={toggleTheme} type="button" aria-label="Cambiar tema">
+              <span aria-hidden="true" />
             </button>
-          ) : (
-            <Link className="button" href="/login">
-              Iniciar sesión
-            </Link>
-          )}
-        </div>
-      </header>
-      {children}
-      <footer className="footer">
-        <div>© 2026 Courses Platform — Formación empresarial</div>
-      </footer>
-    </div>
+            {isLoggedIn ? (
+              <button className="button secondary" onClick={handleLogout} type="button">
+                Cerrar sesión
+              </button>
+            ) : (
+              <Link className="button" href="/login">
+                Iniciar sesión
+              </Link>
+            )}
+          </div>
+        </header>
+        {children}
+        <footer className="footer">
+          <div>© 2026 Courses Platform — Formación empresarial</div>
+        </footer>
+      </div>
+    </ToastProvider>
   );
 }
