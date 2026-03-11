@@ -94,6 +94,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <Link href="/">Inicio</Link>
             {isLoggedIn && <Link href="/courses">Cursos</Link>}
             {role === "admin" && <Link href="/admin">Admin</Link>}
+            {isLoggedIn && <Link href="/profile">Perfil</Link>}
           </nav>
           <div className="nav-actions">
             <button className="theme-toggle" onClick={toggleTheme} type="button" aria-label="Cambiar tema">
