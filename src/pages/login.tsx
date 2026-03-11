@@ -46,10 +46,11 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     setError(null);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     const { error: signInError } = await supabaseBrowser.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: typeof window !== "undefined" ? `${window.location.origin}/login` : undefined
+        redirectTo: `${baseUrl}/login`
       }
     });
 

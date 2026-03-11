@@ -7,6 +7,8 @@ import { supabaseBrowser } from "@/lib/supabaseBrowser";
 type UserRole = "admin" | "student" | null;
 type ThemeMode = "light" | "dark";
 
+const isDev = process.env.NODE_ENV === "development";
+
 export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -79,6 +81,11 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="container">
+      {isDev && (
+        <div className="dev-banner">
+          Modo desarrollo
+        </div>
+      )}
       <header className="nav">
         <div className="brand">
           <span className="brand-dot" />
