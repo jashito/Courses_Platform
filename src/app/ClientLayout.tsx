@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -11,6 +12,32 @@ type UserRole = "admin" | "instructor" | "student" | null;
 type ThemeMode = "light" | "dark";
 
 const isDev = process.env.NEXT_PUBLIC_IS_DEV === "true";
+
+interface NavItem {
+  href: string;
+  label: string;
+  icon?: string;
+}
+
+const navItems: NavItem[] = [
+  { href: "/", label: "nav.home", icon: "home" },
+  { href: "/courses", label: "nav.programs", icon: "courses" },
+  { href: "/blog", label: "nav.blog" },
+  { href: "/contact", label: "nav.contact" },
+  { href: "/pricing", label: "nav.pricing" },
+];
+
+function SidebarIcon({ name, size = 24 }: { name: string; size?: number }) {
+  return (
+    <Image
+      src={`/assets/icons/sidebar/${name}.svg`}
+      alt={name}
+      width={size}
+      height={size}
+      style={{ filter: "invert(1) brightness(0.9)" }}
+    />
+  );
+}
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -88,13 +115,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     setLang(lang === "es" ? "en" : "es");
   };
 
-  const navItems = [
-    { href: "/", label: t.nav.home },
-    { href: "/courses", label: t.nav.programs },
-    { href: "/blog", label: t.nav.blog },
-    { href: "/contact", label: t.nav.contact },
-    { href: "/pricing", label: t.nav.pricing },
-  ];
+  const getNavLabel = (item: NavItem) => {
+    const keys = item.label.split(".");
+    // @ts-expect-error translations
+    return t[keys[0]]?.[keys[1]] || item.label;
+  };
 
   return (
     <ToastProvider>
@@ -109,8 +134,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           
           <nav className="sidebar-nav">
             {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="sidebar-link">
-                {item.label}
+              <Link key={item.href} href={item.href} className="sidebar-link" title={getNavLabel(item)}>
+                {item.icon ? <SidebarIcon name={item.icon} /> : getNavLabel(item).charAt(0)}
               </Link>
             ))}
           </nav>
@@ -158,7 +183,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <nav className="mobile-nav">
               {navItems.map((item) => (
                 <Link key={item.href} href={item.href} className="mobile-link">
-                  {item.label}
+                  {getNavLabel(item)}
                 </Link>
               ))}
               <hr className="mobile-divider" />
