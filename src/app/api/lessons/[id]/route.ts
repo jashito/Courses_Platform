@@ -3,7 +3,7 @@ import { getUserAndRole } from "@/lib/authServer";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_request: NextRequest, { params }: { params: { id: string } }) {
   const cookieStore = cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -63,7 +63,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   return NextResponse.json(data);
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_request: NextRequest, { params }: { params: { id: string } }) {
   const cookieStore = cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

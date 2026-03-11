@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabaseBrowser";
 
-type UserRole = "admin" | "student" | null;
+type UserRole = "admin" | "instructor" | "student" | null;
 type ThemeMode = "light" | "dark";
 
 const isDev = process.env.NEXT_PUBLIC_IS_DEV === "true";

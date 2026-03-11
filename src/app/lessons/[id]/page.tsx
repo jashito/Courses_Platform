@@ -1,9 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { EmptyState, ErrorState, LoadingState } from "@/components/States";
-import { fetchJSON } from "@/lib/api";
+import { useFetch } from "@/lib/useFetch";
 
 interface LessonDetail {
   id: string;
@@ -15,24 +13,13 @@ interface LessonDetail {
 }
 
 export default function LessonPage({ params }: { params: { id: string } }) {
-  const router = useRouter();
-  const [lesson, setLesson] = useState<LessonDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!params.id) return;
-    fetchJSON<LessonDetail>(`/api/lessons/${params.id}`)
-      .then(setLesson)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [params.id]);
+  const { data: lesson, isLoading, error } = useFetch<LessonDetail>(`/api/lessons/${params.id}`);
 
   return (
     <>
-      {loading && <LoadingState label="Cargando lección..." />}
-      {error && <ErrorState message={error} />}
-      {!loading && !error && !lesson && (
+      {isLoading && <LoadingState label="Cargando lección..." />}
+      {error && <ErrorState message={error.message} />}
+      {!isLoading && !error && !lesson && (
         <EmptyState title="Lección no encontrada" description="Revisa el enlace o vuelve al curso." />
       )}
 
@@ -59,7 +46,7 @@ export default function LessonPage({ params }: { params: { id: string } }) {
 
             <div style={{ marginTop: 16 }}>
               <h3>Recursos</h3>
-              {lesson.resources?.length ? (
+              {lesson.resources && lesson.resources.length > 0 ? (
                 <ul className="meta">
                   {lesson.resources.map((resource) => (
                     <li key={resource.id}>
@@ -76,9 +63,9 @@ export default function LessonPage({ params }: { params: { id: string } }) {
 
             <div style={{ marginTop: 16 }}>
               <h3>Evaluación</h3>
-              {lesson.quizzes?.length ? (
+              {lesson.quizzes && lesson.quizzes.length > 0 ? (
                 <div className="card">
-                  <h4>{lesson.quizzes[0].title}</h4>
+                  <h4>{lesson.quizzes[0]?.title}</h4>
                   <p className="meta">Completa el quiz para cerrar la lección.</p>
                   <button className="button">Responder evaluación</button>
                 </div>

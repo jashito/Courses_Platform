@@ -3,7 +3,7 @@ import { getUserAndRole } from "@/lib/authServer";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   const cookieStore = cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     }
   );
 
-  const { searchParams } = new URL(request.url);
+  const { searchParams } = new URL(_request.url);
   const course_id = searchParams.get("course_id");
   let query = supabase.from("modules").select("*");
   if (course_id) query = query.eq("course_id", course_id);

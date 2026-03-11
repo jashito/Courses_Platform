@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+type UserRole = "admin" | "instructor" | "student";
+
 export async function middleware(request: NextRequest) {
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -36,7 +38,7 @@ export async function middleware(request: NextRequest) {
     .eq("user_id", user.id)
     .single();
 
-  const role = profile?.role ?? "student";
+  const role = (profile?.role ?? "student") as UserRole;
   const isAdminRoute = request.nextUrl.pathname.startsWith("/admin");
 
   if (isAdminRoute && role !== "admin") {

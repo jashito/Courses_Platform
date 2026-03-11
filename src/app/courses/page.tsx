@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import CourseCard from "@/components/CourseCard";
 import { EmptyState, ErrorState, LoadingState } from "@/components/States";
-import { fetchJSON } from "@/lib/api";
+import { useFetch } from "@/lib/useFetch";
 
 interface Course {
   id: string;
@@ -13,21 +13,15 @@ interface Course {
 }
 
 export default function CoursesPage() {
-  const [courses, setCourses] = useState<Course[]>([]);
   const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: courses, isLoading, error } = useFetch<Course[]>("/api/courses");
 
-  useEffect(() => {
-    fetchJSON<Course[]>("/api/courses")
-      .then(setCourses)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const filtered = courses.filter((course) =>
-    course.title.toLowerCase().includes(query.toLowerCase())
-  );
+  const filtered = useMemo(() => {
+    if (!courses) return [];
+    return courses.filter((course) =>
+      course.title.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [courses, query]);
 
   return (
     <section className="surface page-hero">
@@ -40,17 +34,17 @@ export default function CoursesPage() {
         onChange={(event) => setQuery(event.target.value)}
       />
 
-      {loading && <LoadingState label="Cargando cursos..." />}
-      {error && <ErrorState message={error} />}
+      {isLoading && <LoadingState label="Cargando cursos..." />}
+      {error && <ErrorState message={error.message} />}
 
-      {!loading && !error && filtered.length === 0 && (
+      {!isLoading && !error && filtered.length === 0 && (
         <EmptyState
           title="No hay cursos disponibles"
           description="Vuelve más tarde o contacta al administrador para nuevas publicaciones."
         />
       )}
 
-      {!loading && !error && filtered.length > 0 && (
+      {!isLoading && !error && filtered.length > 0 && (
         <section className="grid">
           {filtered.map((course) => (
             <CourseCard

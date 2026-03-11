@@ -1,9 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { EmptyState, ErrorState, LoadingState } from "@/components/States";
-import { fetchJSON } from "@/lib/api";
+import { useFetch } from "@/lib/useFetch";
 import Link from "next/link";
 
 interface Lesson {
@@ -26,17 +25,7 @@ interface CourseDetail {
 
 export default function CourseDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
-  const [course, setCourse] = useState<CourseDetail | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!params.id) return;
-    fetchJSON<CourseDetail>(`/api/courses/${params.id}`)
-      .then(setCourse)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [params.id]);
+  const { data: course, isLoading, error } = useFetch<CourseDetail>(`/api/courses/${params.id}`);
 
   return (
     <>
@@ -44,10 +33,10 @@ export default function CourseDetailPage({ params }: { params: { id: string } })
         Volver a cursos
       </button>
 
-      {loading && <LoadingState label="Cargando curso..." />}
-      {error && <ErrorState message={error} />}
+      {isLoading && <LoadingState label="Cargando curso..." />}
+      {error && <ErrorState message={error.message} />}
 
-      {!loading && !error && !course && (
+      {!isLoading && !error && !course && (
         <EmptyState title="Curso no encontrado" description="Verifica la URL o vuelve al listado." />
       )}
 
@@ -66,7 +55,7 @@ export default function CourseDetailPage({ params }: { params: { id: string } })
           <section className="split">
             <div className="surface">
               <h2 className="section-title">Módulos y lecciones</h2>
-              {course.modules?.length ? (
+              {course.modules && course.modules.length > 0 ? (
                 course.modules.map((module) => (
                   <div key={module.id} className="card soft" style={{ marginBottom: 12 }}>
                     <h3>{module.title}</h3>

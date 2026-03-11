@@ -1,6 +1,8 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
+export type UserRole = "admin" | "instructor" | "student";
+
 export async function getUserAndRole() {
   const cookieStore = cookies();
   const supabase = createServerClient(
@@ -28,5 +30,5 @@ export async function getUserAndRole() {
     .eq("user_id", authData.user.id)
     .single();
 
-  return { user: authData.user, role: profile?.role ?? "student" };
+  return { user: authData.user, role: (profile?.role ?? "student") as UserRole };
 }

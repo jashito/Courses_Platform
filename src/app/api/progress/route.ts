@@ -3,7 +3,7 @@ import { getUserAndRole } from "@/lib/authServer";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   const cookieStore = cookies();
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
   const { user } = await getUserAndRole();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { searchParams } = new URL(request.url);
+  const { searchParams } = new URL(_request.url);
   const lesson_id = searchParams.get("lesson_id");
   let query = supabase.from("progress").select("*").eq("user_id", user.id);
   if (lesson_id) query = query.eq("lesson_id", lesson_id);
