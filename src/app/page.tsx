@@ -1,94 +1,58 @@
+"use client";
+
 import Link from "next/link";
+import { useI18n } from "@/components/I18n";
 
 export default function HomePage() {
+  const { t } = useI18n();
+
   return (
     <>
-      <section className="hero">
-        <div>
-          <span className="pill">Plataforma premium de aprendizaje</span>
-          <h1>Capacitación empresarial que transforma equipos</h1>
-          <p>
-            Diseña itinerarios con foco en OKRs, liderazgo y estrategia. Mide el avance y acelera resultados con una
-            experiencia elegante y simple.
-          </p>
-          <div className="nav-actions">
-            <Link className="button" href="/courses">
-              Explorar programas
-            </Link>
-            <Link className="button ghost" href="/login">
-              Acceder
-            </Link>
-          </div>
+      <section className="hero-modern">
+        <span className="pill">Professional Learning Platform</span>
+        <h1>{t.home.heroTitle}</h1>
+        <p>{t.home.heroSubtitle}</p>
+        
+        <div className="hero-cta">
+          <Link className="button primary" href="/courses">
+            {t.home.ctaPrimary}
+          </Link>
+          <Link className="button secondary" href="/courses">
+            {t.home.ctaSecondary}
+          </Link>
         </div>
-        <div className="hero-card">
-          <div className="grid tight">
-            <div className="stat">
-              <strong>+40%</strong>
-              <span className="meta">Mejora en foco estratégico</span>
-            </div>
-            <div className="stat">
-              <strong>12 semanas</strong>
-              <span className="meta">Roadmaps ejecutivos</span>
-            </div>
-            <div className="stat">
-              <strong>Seguimiento</strong>
-              <span className="meta">Paneles y métricas en tiempo real</span>
-            </div>
+
+        <div className="hero-stats">
+          <div className="hero-stat">
+            <strong>10K+</strong>
+            <span>{t.home.statsUsers}</span>
+          </div>
+          <div className="hero-stat">
+            <strong>50+</strong>
+            <span>{t.home.statsCourses}</span>
+          </div>
+          <div className="hero-stat">
+            <strong>4.9</strong>
+            <span>{t.home.statsRating}</span>
           </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="page-hero">
-          <h2 className="section-title">Rutas de alto impacto</h2>
-          <p className="meta">Programas diseñados para líderes y equipos que quieren ejecutar con claridad.</p>
+      <section className="feature-grid">
+        <div className="feature-card">
+          <div className="feature-icon">🎯</div>
+          <h3>{t.home.feature1Title}</h3>
+          <p>{t.home.feature1Desc}</p>
         </div>
-        <div className="grid">
-          <div className="card soft">
-            <span className="badge">Estrategia</span>
-            <h3>OKRs para organizaciones modernas</h3>
-            <p className="meta">Frameworks accionables, seguimiento continuo y alineación total.</p>
-            <Link className="button link" href="/courses">
-              Conocer ruta
-            </Link>
-          </div>
-          <div className="card soft">
-            <span className="badge">Liderazgo</span>
-            <h3>Liderazgo consciente y toma de decisiones</h3>
-            <p className="meta">Potencia a los líderes con herramientas de comunicación y coaching.</p>
-            <Link className="button link" href="/courses">
-              Conocer ruta
-            </Link>
-          </div>
-          <div className="card soft">
-            <span className="badge">Gestión</span>
-            <h3>Escalamiento de equipos de alto desempeño</h3>
-            <p className="meta">Cultura, métricas y execution playbooks para crecer sin fricción.</p>
-            <Link className="button link" href="/courses">
-              Conocer ruta
-            </Link>
-          </div>
+        <div className="feature-card">
+          <div className="feature-icon">⚡</div>
+          <h3>{t.home.feature2Title}</h3>
+          <p>{t.home.feature2Desc}</p>
         </div>
-      </section>
-
-      <section className="split">
-        <div className="surface">
-          <h2 className="section-title">¿Cómo funciona?</h2>
-          <p className="meta">Todo listo para que tu equipo aprenda, mida y evolucione.</p>
-          <div className="list">
-            <div className="card soft">Activa cohortes y crea rutas personalizadas.</div>
-            <div className="card soft">Comparte insights con tus líderes en segundos.</div>
-            <div className="card soft">Monitoriza progreso y certificaciones sin esfuerzo.</div>
-          </div>
-        </div>
-        <div className="surface">
-          <h2 className="section-title">Experiencia premium</h2>
-          <p className="meta">Todo el contenido visual y los espacios están optimizados para claridad y velocidad.</p>
-          <div className="list">
-            <div className="card soft">UI elegante con modo oscuro opcional.</div>
-            <div className="card soft">Cards dinámicas, métricas y tableros ejecutivos.</div>
-            <div className="card soft">Onboarding guiado para equipos distribuidos.</div>
-          </div>
+        <div className="feature-card">
+          <div className="feature-icon">🏆</div>
+          <h3>{t.home.feature3Title}</h3>
+          <p>{t.home.feature3Desc}</p>
         </div>
       </section>
     </>

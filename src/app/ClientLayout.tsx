@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabaseBrowser } from "@/lib/supabaseBrowser";
 import { ToastProvider } from "@/components/Toast";
+import { useI18n } from "@/components/I18n";
 
 type UserRole = "admin" | "instructor" | "student" | null;
 type ThemeMode = "light" | "dark";
@@ -13,9 +14,11 @@ const isDev = process.env.NEXT_PUBLIC_IS_DEV === "true";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const { t, lang, setLang } = useI18n();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState<UserRole>(null);
   const [theme, setTheme] = useState<ThemeMode>("light");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const stored = typeof window !== "undefined" ? window.localStorage.getItem("theme") : null;
@@ -81,40 +84,95 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
+  const toggleLang = () => {
+    setLang(lang === "es" ? "en" : "es");
+  };
+
+  const navItems = [
+    { href: "/", label: t.nav.home },
+    { href: "/courses", label: t.nav.programs },
+    { href: "/blog", label: t.nav.blog },
+    { href: "/contact", label: t.nav.contact },
+    { href: "/pricing", label: t.nav.pricing },
+  ];
+
   return (
     <ToastProvider>
-      <div className="container">
+      <div className="app-layout">
         {isDev && <div className="dev-banner">Modo desarrollo</div>}
-        <header className="nav">
-          <div className="brand">
+        
+        <aside className="sidebar">
+          <div className="sidebar-brand">
             <span className="brand-dot" />
-            <strong>Courses Platform</strong>
+            <strong>CP</strong>
           </div>
-          <nav className="nav-links">
-            <Link href="/">Inicio</Link>
-            {isLoggedIn && <Link href="/courses">Cursos</Link>}
-            {role === "admin" && <Link href="/admin">Admin</Link>}
-            {isLoggedIn && <Link href="/profile">Perfil</Link>}
-          </nav>
-          <div className="nav-actions">
-            <button className="theme-toggle" onClick={toggleTheme} type="button" aria-label="Cambiar tema">
-              <span aria-hidden="true" />
-            </button>
-            {isLoggedIn ? (
-              <button className="button secondary" onClick={handleLogout} type="button">
-                Cerrar sesión
-              </button>
-            ) : (
-              <Link className="button" href="/login">
-                Iniciar sesión
+          
+          <nav className="sidebar-nav">
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href} className="sidebar-link">
+                {item.label}
               </Link>
-            )}
+            ))}
+          </nav>
+
+          <div className="sidebar-footer">
+            <button onClick={toggleLang} className="lang-toggle">
+              {lang === "es" ? "EN" : "ES"}
+            </button>
+            <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle theme">
+              {theme === "light" ? "🌙" : "☀️"}
+            </button>
           </div>
-        </header>
-        {children}
-        <footer className="footer">
-          <div>© 2026 Courses Platform — Formación empresarial</div>
-        </footer>
+        </aside>
+
+        <main className="main-content">
+          <header className="top-bar">
+            <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              ☰
+            </button>
+            <div className="top-bar-spacer" />
+            <div className="top-bar-actions">
+              {isLoggedIn ? (
+                <>
+                  <Link href="/my-courses" className="top-bar-link">{t.nav.profile}</Link>
+                  {role === "admin" && <Link href="/admin" className="top-bar-link">{t.nav.admin}</Link>}
+                  <button onClick={handleLogout} className="button secondary small">{t.nav.logout}</button>
+                </>
+              ) : (
+                <Link href="/login" className="button primary small">{t.nav.login}</Link>
+              )}
+            </div>
+          </header>
+          
+          <div className="content">
+            {children}
+          </div>
+
+          <footer className="footer-simple">
+            {t.home.footer}
+          </footer>
+        </main>
+
+        {mobileMenuOpen && (
+          <div className="mobile-menu" onClick={() => setMobileMenuOpen(false)}>
+            <nav className="mobile-nav">
+              {navItems.map((item) => (
+                <Link key={item.href} href={item.href} className="mobile-link">
+                  {item.label}
+                </Link>
+              ))}
+              <hr className="mobile-divider" />
+              {isLoggedIn ? (
+                <>
+                  <Link href="/my-courses" className="mobile-link">{t.nav.profile}</Link>
+                  <button onClick={handleLogout} className="mobile-link">{t.nav.logout}</button>
+                </>
+              ) : (
+                <Link href="/login" className="mobile-link">{t.nav.login}</Link>
+              )}
+            </nav>
+          </div>
+        )}
       </div>
     </ToastProvider>
   );
