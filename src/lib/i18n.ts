@@ -56,7 +56,7 @@ const es: Translations = {
     statsUsers: "Estudiantes",
     statsCourses: "Programas",
     statsRating: "Rating",
-    footer: "© 2026 Courses Platform. Todos los derechos reservados.",
+    footer: "© 2026 Effort-U. Todos los derechos reservados.",
   },
 };
 
@@ -86,7 +86,7 @@ const en: Translations = {
     statsUsers: "Students",
     statsCourses: "Programs",
     statsRating: "Rating",
-    footer: "© 2026 Courses Platform. All rights reserved.",
+    footer: "© 2026 Effort-U. All rights reserved.",
   },
 };
 

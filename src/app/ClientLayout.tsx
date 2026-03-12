@@ -114,7 +114,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         
         <aside className="sidebar">
           <div className="sidebar-brand">
-            <strong>CP</strong>
+            <strong>Effort-U</strong>
           </div>
           
           <nav className="sidebar-nav">

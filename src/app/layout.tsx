@@ -7,7 +7,7 @@ import { I18nProvider } from "@/components/I18n";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Courses Platform",
+  title: "Effort-U",
   description: "Plataforma de aprendizaje corporativo",
 };
 
