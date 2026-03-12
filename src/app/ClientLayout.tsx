@@ -110,8 +110,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <ToastProvider>
       <div className="app-layout">
-        {isDev && <div className="dev-banner">Modo desarrollo</div>}
-        
         <aside className="sidebar">
           <div className="sidebar-brand">
             <strong>Effort-U</strong>
@@ -136,6 +134,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </aside>
 
         <main className="main-content">
+          {isDev && <div className="dev-banner">Modo desarrollo</div>}
           <header className="top-bar">
             <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               ☰
