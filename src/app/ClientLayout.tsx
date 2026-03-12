@@ -34,7 +34,7 @@ function SidebarIcon({ name, size = 28 }: { name: string; size?: number }) {
       alt={name}
       width={size}
       height={size}
-      style={{ filter: "invert(1) brightness(0.9)" }}
+      className="sidebar-icon"
     />
   );
 }
