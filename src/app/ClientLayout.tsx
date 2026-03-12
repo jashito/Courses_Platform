@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -16,28 +15,15 @@ const isDev = process.env.NEXT_PUBLIC_IS_DEV === "true";
 interface NavItem {
   href: string;
   label: string;
-  icon?: string;
 }
 
 const navItems: NavItem[] = [
-  { href: "/", label: "nav.home", icon: "home" },
-  { href: "/courses", label: "nav.programs", icon: "courses" },
+  { href: "/", label: "nav.home" },
+  { href: "/courses", label: "nav.programs" },
   { href: "/blog", label: "nav.blog" },
   { href: "/contact", label: "nav.contact" },
   { href: "/pricing", label: "nav.pricing" },
 ];
-
-function SidebarIcon({ name, size = 100 }: { name: string; size?: number }) {
-  return (
-    <Image
-      src={`/assets/icons/sidebar/${name}.svg`}
-      alt={name}
-      width={size}
-      height={size}
-      className="sidebar-icon"
-    />
-  );
-}
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -128,14 +114,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         
         <aside className="sidebar">
           <div className="sidebar-brand">
-            <span className="brand-dot" />
             <strong>CP</strong>
           </div>
           
           <nav className="sidebar-nav">
             {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="sidebar-link" title={getNavLabel(item)}>
-                {item.icon ? <SidebarIcon name={item.icon} /> : getNavLabel(item).charAt(0)}
+              <Link key={item.href} href={item.href} className="sidebar-link">
+                {getNavLabel(item)}
               </Link>
             ))}
           </nav>
