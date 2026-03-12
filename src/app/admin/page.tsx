@@ -137,6 +137,18 @@ export default function AdminPage() {
     }
   };
 
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm("¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.")) return;
+    try {
+      const res = await fetch(`/api/users?user_id=${userId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error();
+      showToast("Usuario eliminado", "success");
+      fetchUsers();
+    } catch {
+      showToast("Error al eliminar usuario", "error");
+    }
+  };
+
   const openEditModal = (course: Course) => {
     setEditingCourse(course);
     setFormData({
@@ -261,6 +273,13 @@ export default function AdminPage() {
                       <option value="instructor">Instructor</option>
                       <option value="admin">Administrador</option>
                     </select>
+                    <button
+                      className="button secondary"
+                      style={{ color: "#ef4444" }}
+                      onClick={() => handleDeleteUser(user.user_id)}
+                    >
+                      Eliminar
+                    </button>
                   </div>
                 </div>
               ))}

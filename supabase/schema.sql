@@ -6,9 +6,10 @@ create extension if not exists "pgcrypto";
 -- Tables
 create table if not exists public.profiles (
   user_id uuid primary key references auth.users(id) on delete cascade,
-  full_name text,
+  full_name text not null,
   role text not null default 'student',
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table if not exists public.courses (
@@ -107,7 +108,8 @@ returns trigger
 language plpgsql
 as $$
 begin
-  insert into public.profiles (user_id) values (new.id)
+  insert into public.profiles (user_id, full_name)
+  values (new.id, new.raw_user_meta_data->>'full_name')
   on conflict (user_id) do nothing;
   return new;
 end;
