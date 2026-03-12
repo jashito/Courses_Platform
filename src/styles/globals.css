@@ -387,7 +387,7 @@ a {
 }
 
 .sidebar {
-  width: 72px;
+  width: 120px;
   background: var(--surface);
   border-right: 1px solid var(--border);
   display: flex;
@@ -415,8 +415,8 @@ a {
 }
 
 .sidebar-link {
-  width: 56px;
-  height: 56px;
+  width: 100px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -470,7 +470,7 @@ a {
 
 .main-content {
   flex: 1;
-  margin-left: 72px;
+  margin-left: 120px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;

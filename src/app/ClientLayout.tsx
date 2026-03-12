@@ -27,7 +27,7 @@ const navItems: NavItem[] = [
   { href: "/pricing", label: "nav.pricing" },
 ];
 
-function SidebarIcon({ name, size = 28 }: { name: string; size?: number }) {
+function SidebarIcon({ name, size = 100 }: { name: string; size?: number }) {
   return (
     <Image
       src={`/assets/icons/sidebar/${name}.svg`}
